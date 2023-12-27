@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import styles from './BlogList.module.css'; // Import the CSS Modules styles
 
 const BLOG_QUERY = `{
     blogCollection(limit: 5) {
@@ -37,14 +38,14 @@ const BlogList = ({ token }) => {
     }, [token]);
 
     return (
-        <div>
-            {error && <p>Error: {error.message}</p>} {/* Display error message */}
+        <div className={styles['blog-list']}>
+            {error && <p className={styles['error-message']}>Error: {error.message}</p>}
             {blogs.map(blog => (
-                <div key={blog.identifier}>
+                <div key={blog.identifier} className={styles['blog-item']}>
                     <h2>
-                      <Link href={`/blogs/${blog.identifier}`}>
-                        {blog.title}
-                      </Link>
+                        <Link href={`/blogs/${blog.identifier}`}>
+                            <div className={styles['blog-title']}>{blog.title}</div>
+                        </Link>
                     </h2>
                 </div>
             ))}

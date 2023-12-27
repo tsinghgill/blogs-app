@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import styles from './BlogDetail.module.css';
 
 const BlogDetail = ({ token }) => {
   const [blog, setBlog] = useState(null);
@@ -10,9 +11,6 @@ const BlogDetail = ({ token }) => {
   const { id } = router.query;
 
   useEffect(() => {
-    // Ensure token is available before making requests
-    if (!token) return;
-
     const fetchBlogDetail = async () => {
       if (!id) return; // Ensure id is present
 
@@ -59,20 +57,26 @@ const BlogDetail = ({ token }) => {
     };
 
     fetchBlogDetail();
-  }, [id, token]); // Depend on id to re-run the effect when it changes
+  }, [id]);
 
   return (
-    <div>
-      {error && <p>Error: {error.message}</p>}
+    <div className={styles['blog-detail-container']}>
+      {error && <p className={styles['error-message']}>Error: {error.message}</p>}
       {blog ? (
         <>
-          <h1>{blog.title}</h1>
-          <p>{blog.teaser}</p>
+          <h1 className={styles['blog-title']}>{blog.title}</h1>
+          <p className={styles['blog-teaser']}>{blog.teaser}</p>
+          <p className={styles['blog-posting-date']}>Posting Date: {blog.postingDate}</p>
+          <p className={styles['blog-tags']}>Tags: {blog.tags.join(', ')}</p>
+          <p className={styles['blog-url-title']}>URL Title: {blog.urlTitle}</p>
           {/* Render other blog details as needed */}
-          {/* Safely rendering blogContent.json depends on its structure */}
+          <div
+            className={styles['blog-content']}
+            dangerouslySetInnerHTML={{ __html: blog.blogContent.json }}
+          />
         </>
       ) : (
-        <p>Loading...</p>
+        <p className={styles['loading-message']}>Loading...</p>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styles from './Banner.module.css';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -59,13 +60,13 @@ const Banner = ({ token }) => {
     }, [token]);
 
     return (
-        <div className="banner-container">
+        <div className={styles['banner-container']}>
             <Slider {...sliderSettings}>
                 {banners.map((banner, index) => (
-                    <div key={index} className="banner-item">
+                    <div key={index} className={styles['banner-item']}>
                         <a href={banner.link}>
                             <img src={banner.image.path} alt={banner.title} />
-                            <div className="caption">{banner.caption}</div>
+                            <div className={styles['caption']}>{banner.caption}</div>
                         </a>
                     </div>
                 ))}

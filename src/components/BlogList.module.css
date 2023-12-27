@@ -1,0 +1,28 @@
+/* src/components/BlogList.module.css */
+
+/* Styles for the list container */
+.blog-list {
+  margin: 20px;
+}
+
+/* Styles for each blog item */
+.blog-item {
+  margin-bottom: 10px;
+}
+
+/* Styles for the blog title/link */
+.blog-title {
+  font-size: 18px;
+  color: #333;
+  text-decoration: none;
+}
+
+.blog-title:hover {
+  text-decoration: underline;
+}
+
+/* Styles for error message */
+.error-message {
+  color: red;
+  font-weight: bold;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styles from './Navbar.module.css'; // Import the CSS Modules styles
 
 const Navbar = ({ token }) => {
     const [navItems, setNavItems] = useState([]);
@@ -42,11 +43,15 @@ const Navbar = ({ token }) => {
     }
 
     return (
-        <nav>
-            <ul>
+        <nav className={styles['navbar']}>
+            <ul className={styles['nav-list']}>
+                <li className={styles['nav-item']}>
+                    <a href="localhost:3000" className={styles['nav-link']}>{"Home"}</a>
+                </li>
+
                 {navItems.map((item, index) => (
-                    <li key={index}>
-                        <a href={item.href}>{item.title}</a>
+                    <li key={index} className={styles['nav-item']}>
+                        <a href={item.href} className={styles['nav-link']}>{item.title}</a>
                     </li>
                 ))}
             </ul>

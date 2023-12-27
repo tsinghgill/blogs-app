@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styles from './ProductPromo.module.css'; // Import the CSS Modules styles
 
 const ProductPromo = ({ token }) => {
     // State for promos and error
@@ -48,15 +49,15 @@ const ProductPromo = ({ token }) => {
     }, [token]);
 
     return (
-        <div className="product-promo-container">
+        <div className={styles['product-promo-container']}>
             {/* Map over promos and display them */}
             {promos.map((promo, index) => (
-                <div key={index} className="promo-item">
+                <div key={index} className={styles['promo-item']}>
                     <img src={promo.image.path} alt={promo.title} />
-                    <h3>{promo.title}</h3>
-                    <p>{promo.description}</p>
-                    <p>Price: {promo.retailPrice}</p>
-                    <p>Sale Price: {promo.salePrice}</p>
+                    <h3 className={styles['promo-title']}>{promo.title}</h3>
+                    <p className={styles['promo-description']}>{promo.description}</p>
+                    <p className={styles['promo-price']}>Price: {promo.retailPrice}</p>
+                    <p className={styles['promo-price']}>Sale Price: {promo.salePrice}</p>
                     {/* Add more fields as needed */}
                 </div>
             ))}

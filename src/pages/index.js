@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import BlogList from '../components/BlogList';
 import Banner from '../components/Banner';
 import ProductPromo from '../components/ProductPromo';
+import styles from './index.module.css'; // Import the CSS Modules styles
 
 const HomePage = () => {
     const [token, setToken] = useState('');
@@ -22,13 +23,19 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div>
+        <div className={styles['main-container']}>
             <Navbar token={token} />
-            <Banner token={token} />
-            <h1>Welcome to the Blog App</h1>
-            <BlogList token={token} />
-            <h1>Welcome to the Product Promos</h1>
-            <ProductPromo token={token} />
+            <div className={styles['banner-section']}>
+                <Banner token={token} />
+            </div>
+            <h1 className={styles['main-heading']}>Blogs</h1>
+            <div className={styles['section']}>
+                <BlogList token={token} />
+            </div>
+            <h1 className={styles['main-heading']}>Product Promos</h1>
+            <div className={`${styles['section']} ${styles['product-promo-section']}`}>
+                <ProductPromo token={token} />
+            </div>
         </div>
     );
 };

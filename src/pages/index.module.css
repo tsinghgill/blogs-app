@@ -1,0 +1,45 @@
+/* src/pages/index.module.css */
+
+/* Styles for the main container */
+.main-container {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+/* Styles for the banner section */
+.banner-section {
+  margin-bottom: 40px;
+}
+
+/* Styles for the main heading */
+.main-heading {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+/* Styles for the sections (e.g., blog and product promos) */
+.section {
+  text-align: center; /* Center the content within each section */
+  margin-bottom: 40px;
+}
+
+/* Styles for the ProductPromo section */
+.product-promo-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: !center; /* Center the promos horizontally */
+}
+
+/* Styles for each promo item */
+.promo-item {
+  width: calc(33.33% - 20px);
+  margin: 0 10px 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #fff;
+}

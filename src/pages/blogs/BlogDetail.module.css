@@ -1,0 +1,31 @@
+/* src/components/BlogDetail.module.css */
+
+/* Styles for the blog detail container */
+.blog-detail-container {
+  margin: 20px;
+}
+
+/* Styles for the blog title */
+.blog-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Styles for the blog teaser */
+.blog-teaser {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Styles for the loading message */
+.loading-message {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Styles for error message */
+.error-message {
+  color: red;
+  font-weight: bold;
+}
