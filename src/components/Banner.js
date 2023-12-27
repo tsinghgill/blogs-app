@@ -23,7 +23,6 @@ const Banner = ({ token }) => {
     };
 
     useEffect(() => {
-        // Ensure token is available before making requests
         if (!token) return;
         
         const fetchBanners = async () => {
@@ -42,14 +41,17 @@ const Banner = ({ token }) => {
                 `;
 
                 const response = await axios.post(
-                    'https://demo.dotcms.com/api/v1/graphql',
+                    `${baseURL}/api/v1/graphql`,
                     { query: BANNER_QUERY },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
-                console.log("banner response:", response);
+                const updatedBanners = response.data.data.BannerCollection.map(banner => ({
+                    ...banner,
+                    image: { ...banner.image, path: baseURL + banner.image.path }
+                }));
 
-                setBanners(response.data.data.BannerCollection);
+                setBanners(updatedBanners);
             } catch (error) {
                 console.error('Error fetching banners:', error);
                 setError(error);
@@ -58,6 +60,10 @@ const Banner = ({ token }) => {
 
         fetchBanners();
     }, [token]);
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
     return (
         <div className={styles['banner-container']}>
