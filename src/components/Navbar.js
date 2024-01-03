@@ -1,42 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './Navbar.module.css'; // Import the CSS Modules styles
+import styles from './Navbar.module.css'; 
+import Link from 'next/link';
 
 const Navbar = ({ token }) => {
     const [navItems, setNavItems] = useState([]);
     const [error, setError] = useState(null);
-    const navItemPaths = ["blog", "contact-us"]; // List of nav item paths
 
     useEffect(() => {
-        // Ensure token is available before making requests
         if (!token) return;
 
         const fetchNavItems = async () => {
             try {
-                const navData = [];
+                const response = await axios.get('https://demo.dotcms.com/api/v1/nav/', {
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { depth: 2 }
+                });
 
-                for (const path of navItemPaths) {
-                    const response = await axios.get(`https://demo.dotcms.com/api/v1/nav/${path}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-
-                    if (response.data && response.data.entity) {
-                        navData.push({
-                            title: response.data.entity.title,
-                            href: response.data.entity.href
-                        });
-                    }
+                if (response.data && response.data.entity && response.data.entity.children) {
+                    // console.log(`[DEBUG] [Navbar] [fetchNavItems] response: ${JSON.stringify(response)}`)
+                    setNavItems(response.data.entity.children);
                 }
-
-                setNavItems(navData);
-            } catch (err) {
-                console.error('Error fetching navigation items:', err);
-                setError(err);
+            } catch (error) {
+                console.error('Error fetching navigation items:', error);
+                setError(error);
             }
         };
 
         fetchNavItems();
-    }, [token]); // Add token as a dependency
+    }, [token]);
 
     if (error) {
         return <div>Error loading navigation data.</div>;
@@ -45,13 +37,17 @@ const Navbar = ({ token }) => {
     return (
         <nav className={styles['navbar']}>
             <ul className={styles['nav-list']}>
+                {/* Use Link for internal navigation */}
                 <li className={styles['nav-item']}>
-                    <a href="localhost:3000" className={styles['nav-link']}>{"Home"}</a>
+                    <Link href="/" className={styles['nav-link']}>
+                        Home
+                    </Link>
                 </li>
-
                 {navItems.map((item, index) => (
                     <li key={index} className={styles['nav-item']}>
-                        <a href={item.href} className={styles['nav-link']}>{item.title}</a>
+                        <Link href={item.href} className={styles['nav-link']}>
+                            {item.title}
+                        </Link>
                     </li>
                 ))}
             </ul>

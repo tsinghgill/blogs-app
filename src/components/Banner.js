@@ -14,7 +14,7 @@ const Banner = ({ token }) => {
     const sliderSettings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 450,
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
@@ -24,7 +24,7 @@ const Banner = ({ token }) => {
 
     useEffect(() => {
         if (!token) return;
-        
+
         const fetchBanners = async () => {
             try {
                 const BANNER_QUERY = `
@@ -34,7 +34,6 @@ const Banner = ({ token }) => {
                       image {
                         path
                       }
-                      link
                       caption
                     }
                   }
@@ -45,10 +44,11 @@ const Banner = ({ token }) => {
                     { query: BANNER_QUERY },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
+                // console.log(`[DEBUG] [Banner] [fetchBanners] response: ${JSON.stringify(response)}`)
 
                 const updatedBanners = response.data.data.BannerCollection.map(banner => ({
                     ...banner,
-                    image: { ...banner.image, path: baseURL + banner.image.path }
+                    image: { ...banner.image, path: baseURL + "/" + banner.image.path }
                 }));
 
                 setBanners(updatedBanners);
@@ -70,10 +70,8 @@ const Banner = ({ token }) => {
             <Slider {...sliderSettings}>
                 {banners.map((banner, index) => (
                     <div key={index} className={styles['banner-item']}>
-                        <a href={banner.link}>
-                            <img src={banner.image.path} alt={banner.title} />
-                            <div className={styles['caption']}>{banner.caption}</div>
-                        </a>
+                        <img src={banner.image.path} alt={banner.title} />
+                        <div className={styles['caption']}>{banner.caption}</div>
                     </div>
                 ))}
             </Slider>

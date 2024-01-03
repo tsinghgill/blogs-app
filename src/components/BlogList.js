@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import styles from './BlogList.module.css'; // Import the CSS Modules styles
+import styles from './BlogList.module.css';
 
 const BLOG_QUERY = `{
     blogCollection(limit: 5) {
@@ -26,7 +26,7 @@ const BlogList = ({ token }) => {
                     { query: BLOG_QUERY },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
-                console.log("fetchBlogs response:", response)
+                // console.log(`[DEBUG] [BlogList] [fetchBlogs] response: ${JSON.stringify(response)}`)
                 setBlogs(response.data.data.blogCollection);
             } catch (err) {
                 console.error('Error fetching blogs:', err);
@@ -43,7 +43,7 @@ const BlogList = ({ token }) => {
             {blogs.map(blog => (
                 <div key={blog.identifier} className={styles['blog-item']}>
                     <h2>
-                        <Link href={`/blogs/${blog.identifier}`}>
+                        <Link href={`/blogs/${blog.identifier}`} legacyBehavior>
                             <div className={styles['blog-title']}>{blog.title}</div>
                         </Link>
                     </h2>

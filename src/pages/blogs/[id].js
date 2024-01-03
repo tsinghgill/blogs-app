@@ -9,15 +9,18 @@ const BlogDetail = ({ token }) => {
 
   const router = useRouter();
   const { id } = router.query;
+  // console.log(`[DEBUG] [BlogDetail] router.query: ${JSON.stringify(router.query)}`)
+
 
   useEffect(() => {
     const fetchBlogDetail = async () => {
-      if (!id) return; // Ensure id is present
+      if (!id) return;
 
       try {
         const query = `
           query BlogDetail {
             BlogCollection(query: "identifier:$id") {
+              identifier
               title
               teaser
               postingDate
@@ -41,12 +44,11 @@ const BlogDetail = ({ token }) => {
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        // console.log(`[DEBUG] [BlogDetail] [fetchBlogDetail] response: ${JSON.stringify(response)}`)
 
-        console.log("BlogDetail response:", response)
-
-        const blogData = response.data.data.BlogCollection;
-        if (blogData.length > 0) {
-          setBlog(blogData[0]);
+        const matchingBlog = response.data.data.BlogCollection.find(blog => blog.identifier === id);
+        if (matchingBlog) {
+          setBlog(matchingBlog);
         } else {
           setError(new Error('Blog not found'));
         }

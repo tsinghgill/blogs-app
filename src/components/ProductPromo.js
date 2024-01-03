@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './ProductPromo.module.css'; // Import the CSS Modules styles
+import styles from './ProductPromo.module.css';
 
 const ProductPromo = ({ token }) => {
     const [promos, setPromos] = useState([]);
     const [error, setError] = useState(null);
-    const baseURL = 'https://demo.dotcms.com'; // Define the base URL
 
     useEffect(() => {
         if (!token) return;
@@ -14,7 +13,7 @@ const ProductPromo = ({ token }) => {
             try {
                 const PROMO_QUERY = `
                   query {
-                    ProductCollection {
+                    ProductCollection(limit: 4) {
                       title
                       description
                       image {
@@ -27,14 +26,14 @@ const ProductPromo = ({ token }) => {
                 `;
 
                 const response = await axios.post(
-                    `${baseURL}/api/v1/graphql`,
+                    `https://demo.dotcms.com/api/v1/graphql`,
                     { query: PROMO_QUERY },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
                 const updatedPromos = response.data.data.ProductCollection.map(promo => ({
                     ...promo,
-                    image: { ...promo.image, path: baseURL + promo.image.path }
+                    image: { ...promo.image, path: promo.image.path }
                 }));
 
                 setPromos(updatedPromos);
@@ -57,9 +56,14 @@ const ProductPromo = ({ token }) => {
                 <div key={index} className={styles['promo-item']}>
                     <img src={promo.image.path} alt={promo.title} />
                     <h3 className={styles['promo-title']}>{promo.title}</h3>
-                    <p className={styles['promo-description']}>{promo.description}</p>
+                    <div
+                        className={styles['promo-description']}
+                        dangerouslySetInnerHTML={{ __html: promo.description }}
+                    />
                     <p className={styles['promo-price']}>Price: {promo.retailPrice}</p>
-                    <p className={styles['promo-sale-price']}>Sale Price: {promo.salePrice}</p>
+                    {promo.salePrice && (
+                        <p className={styles['promo-sale-price']}>Sale Price: {promo.salePrice}</p>
+                    )}
                 </div>
             ))}
         </div>
