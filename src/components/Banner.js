@@ -46,10 +46,19 @@ const Banner = ({ token }) => {
                 );
                 // console.log(`[DEBUG] [Banner] [fetchBanners] response: ${JSON.stringify(response)}`)
 
-                const updatedBanners = response.data.data.BannerCollection.map(banner => ({
-                    ...banner,
-                    image: { ...banner.image, path: baseURL + "/" + banner.image.path }
-                }));
+                const updatedBanners = response.data.data.BannerCollection.map(banner => {
+                    // Extracting UUID
+                    const parts = banner.image.path.split('/');
+                    const uuid = parts[2];
+        
+                    // Constructing new URL
+                    const newImageUrl = `${baseURL}/contentAsset/image/${uuid}/image/quality_q/1`;
+        
+                    return {
+                        ...banner,
+                        image: { ...banner.image, path: newImageUrl }
+                    };
+                });
 
                 setBanners(updatedBanners);
             } catch (error) {

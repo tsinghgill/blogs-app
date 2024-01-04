@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-const DynamicPage = ({ token }) => {
+const DynamicPage = () => {
   const router = useRouter();
   const { slug } = router.query;
   const [pageHtml, setPageHtml] = useState('');
@@ -12,6 +12,15 @@ const DynamicPage = ({ token }) => {
     if (!slug) return;
 
     const fetchPageHtml = async () => {
+
+      // TODO: Update to use React's Context API for token management
+      let token;
+      const response = await fetch('/api/getToken');
+      const data = await response.json();
+      if (response.ok) {
+        token = data.token
+      }
+
       const apiUrl = `https://demo.dotcms.com/api/v1/page/render/${slug}`;
       try {
         const response = await axios.get(apiUrl,

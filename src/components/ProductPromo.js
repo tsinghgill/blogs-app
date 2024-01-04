@@ -13,7 +13,7 @@ const ProductPromo = ({ token }) => {
             try {
                 const PROMO_QUERY = `
                   query {
-                    ProductCollection(limit: 4) {
+                    ProductCollection(limit: 10) {
                       title
                       description
                       image {
@@ -31,11 +31,20 @@ const ProductPromo = ({ token }) => {
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
-                const updatedPromos = response.data.data.ProductCollection.map(promo => ({
-                    ...promo,
-                    image: { ...promo.image, path: promo.image.path }
-                }));
-
+                const updatedPromos = response.data.data.ProductCollection.map(promo => {
+                    // Extracting UUID
+                    const parts = promo.image.path.split('/');
+                    const uuid = parts[2];
+        
+                    // Constructing new URL
+                    const newImageUrl = `https://demo.dotcms.com/contentAsset/image/${uuid}/image/quality_q/1`;
+        
+                    return {
+                        ...promo,
+                        image: { ...promo.image, path: newImageUrl }
+                    };
+                });
+                
                 setPromos(updatedPromos);
             } catch (err) {
                 console.error('Error fetching product promos:', err);
