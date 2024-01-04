@@ -2,11 +2,15 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
     try {
-        const apiUrl = 'https://demo.dotcms.com/api/v1/authentication/api-token';
+        const apiUrl = process.env.DOTCMS_API_URL;
+        const username = process.env.DOTCMS_USERNAME;
+        const password = process.env.DOTCMS_PASSWORD;
+        const expirationDays = process.env.DOTCMS_EXPIRATION_DAYS;
+
         const response = await axios.post(apiUrl, {
-            user: 'admin@dotcms.com',
-            password: 'admin',
-            expirationDays: 10
+            user: username,
+            password: password,
+            expirationDays: parseInt(expirationDays)
         }, {
             headers: {
                 'Content-Type': 'application/json'
